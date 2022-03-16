@@ -1,16 +1,22 @@
-# This is a sample Python script.
+from flask import Flask, redirect, url_for, render_template, request
+app = Flask(__name__)
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+@app.route("/")  # this sets the route to this page
+def home():
+	return render_template("index.html")  
 
+if __name__ == "__main__":
+    app.run(debug=True)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
+@app.route("/login", methods=["POST", "GET"])
 
+def login():
+    if request.method == "POST":
+        user = request.form["nm"]
+        return redirect(url_for("user",usr = user))
+    else:
+        return render_template("login.html")
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+@app.route("/<usr>")
+def user(usr):
+    return f"<h1>{usr}</h1>"
